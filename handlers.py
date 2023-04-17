@@ -23,10 +23,21 @@ async def start(message: types.Message):
 
 async def help(message: types.Message):
     s = """
-    
+        Чтобы начать общение с ботом - напишите любую фразу.
+        Иногда бот может отвечать долго - до 2 минут.
+        Это связано со сложностью устройства нейросети, которой для ответа на ваш вопрос требуется немного времени =)
     """
+    await message.answer(s)
+
+async def reset(message: types.Message):
+    s = """
+        Здравствуйте! Чем могу помочь?
+    """
+    GPT(str(message.from_user.id)).reset()
     await message.answer(s)
 
 def register_handlers(dp: Dispatcher):
     dp.register_message_handler(start, commands = ['start'])
+    dp.register_message_handler(help, commands = ['help'])
+    dp.register_message_handler(reset, commands = ['reset'])
     dp.register_message_handler(tell)

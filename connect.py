@@ -9,7 +9,8 @@ dp = Dispatcher(bot, storage = MemoryStorage())
 
 async def set_commands(bot : Bot):
     commands = [
+        BotCommand('/start', 'Начать'),
         BotCommand('/help', 'Помощь'),
-        BotCommand('/start', 'Привет')
+        BotCommand('/reset', 'Сбросить')
     ]
     await bot.set_my_commands(commands)

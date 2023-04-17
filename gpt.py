@@ -16,6 +16,10 @@ class GPT:
     self.messages = self.jf[id]['messages']
     self.lastresponse = 'None'
 
+  def reset(self):
+    self.jf[self.id]['messages'] = []
+    json.dump(self.jf, open('users.json', 'w'))
+    
   def save(self):
     self.jf[self.id]['messages'] = self.messages
     json.dump(self.jf, open('users.json', 'w'))
