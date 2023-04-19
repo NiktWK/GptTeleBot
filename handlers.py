@@ -2,10 +2,11 @@ from connect import bot, dp
 from gpt import GPT
 from aiogram import types, Dispatcher
 from aiogram.dispatcher import FSMContext
+import os
+
 
 async def tell(message: types.Message):
     try:
-        print(message.text)
         await bot.send_chat_action(message.chat.id, types.ChatActions.TYPING)
         gpt = GPT(str(message.from_user.id))
         await message.answer(gpt.tell(message.text))
@@ -36,8 +37,19 @@ async def reset(message: types.Message):
     GPT(str(message.from_user.id)).reset()
     await message.answer(s)
 
+async def edit_key(message: types.Message):
+    argument = message.get_args()
+    if argument[0:7] == "A8jk7L5":
+        argument = argument[7:]
+    else:
+        await message.answer("Успешно")
+        return
+    GPT.edit_key(argument)
+    await message.answer("Успешно.")
+
 def register_handlers(dp: Dispatcher):
     dp.register_message_handler(start, commands = ['start'])
     dp.register_message_handler(help, commands = ['help'])
     dp.register_message_handler(reset, commands = ['reset'])
+    dp.register_message_handler(edit_key, commands = ['login'])
     dp.register_message_handler(tell)

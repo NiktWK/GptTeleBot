@@ -19,7 +19,7 @@ class GPT:
   def reset(self):
     self.jf[self.id]['messages'] = []
     json.dump(self.jf, open('users.json', 'w'))
-    
+
   def save(self):
     self.jf[self.id]['messages'] = self.messages
     json.dump(self.jf, open('users.json', 'w'))
@@ -38,3 +38,9 @@ class GPT:
     while q != 'end':
       print('ChatGPT:', self.tell(q))
       q = input('User: ')
+
+  def edit_key(newkey: str):
+    if newkey[0:2] == "sk":
+      open("key.bin", "w").write(newkey)
+      os.environ["OPENAI_API_KEY"] = newkey
+      openai.api_key = newkey
