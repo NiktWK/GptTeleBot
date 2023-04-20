@@ -5,14 +5,47 @@ from aiogram.dispatcher import FSMContext
 import os
 
 
-async def tell(message: types.Message):
+async def tell(message: types.Message, count = 0):
     try:
         await bot.send_chat_action(message.chat.id, types.ChatActions.TYPING)
         gpt = GPT(str(message.from_user.id))
         await message.answer(gpt.tell(message.text))
     except Exception as er:
-        await message.answer(f'Извините, попробуйте еще раз. {er}')
+        gpt.deleteLast(5)
+        
+        if count > 3:
+            await message.answer(f'Извините, попробуйте еще раз. {er}')
+        else:
+            await tell(message, count+1)
 
+async def tell_private(message: types.Message, count = 0):
+    try:
+        await bot.send_chat_action(message.chat.id, types.ChatActions.TYPING)
+        gpt = GPT(str(message.from_user.id))
+        await message.answer(gpt.tell(message.get_args()))
+    except Exception as er:
+        gpt.deleteLast(5)
+        
+        if count > 3:
+            await message.answer(f'Извините, попробуйте еще раз. {er}')
+        else:
+            await tell_private(message, count+1)
+
+async def tell_public(message: types.Message, count = 0):
+    if message.chat.type == 'private':
+        await message.answer("Извините, эта функция не доступна в личных сообщениях с ботом.")
+        return
+    try:
+        await bot.send_chat_action(message.chat.id, types.ChatActions.TYPING)
+        gpt = GPT(str(message.chat.id))
+        await message.answer(gpt.tell(message.get_args()))
+    except Exception as er:
+        gpt.deleteLast(5)
+        
+        if count > 3:
+            await message.answer(f'Извините, попробуйте еще раз. {er}')
+        else:
+            await tell_public(message, count+1)
 
 async def start(message: types.Message):
     s = """
@@ -23,12 +56,15 @@ async def start(message: types.Message):
     await message.answer(s)
 
 async def help(message: types.Message):
-    s = """
-        Чтобы начать общение с ботом - напишите любую фразу.
-        Иногда бот может отвечать долго - до 2 минут.
-        Это связано со сложностью устройства нейросети, которой для ответа на ваш вопрос требуется немного времени =)
-    """
-    await message.answer(s)
+    s1 = "Чтобы начать общение с ботом - напишите любую фразу.\n"
+    s2 = "Иногда бот может отвечать долго - до 2 минут.\n"
+    s3 = "Это связано со сложностью устройства нейросети, которой для ответа на ваш вопрос требуется немного времени =)\n"
+    s4 = "Основные команды бота:\n"
+    s5 = "/reset - сброс истории сообщений (если что-то пошло не так)\n"
+    s6 = "/tell - отправка сообщения боту не от конкретного пользователя, а от чата (работает только в групповых чатах)\n"
+    s7 = "/ls - отправка сообщения боту от конкретного пользователя (в лс с ботом можно не указывать)"
+
+    await message.answer(s1+s2+s3+s4+s5+s6+s7)
 
 async def reset(message: types.Message):
     s = """
@@ -47,9 +83,12 @@ async def edit_key(message: types.Message):
     GPT.edit_key(argument)
     await message.answer("Успешно.")
 
+
 def register_handlers(dp: Dispatcher):
     dp.register_message_handler(start, commands = ['start'])
     dp.register_message_handler(help, commands = ['help'])
     dp.register_message_handler(reset, commands = ['reset'])
     dp.register_message_handler(edit_key, commands = ['login'])
+    dp.register_message_handler(tell_public, commands = ['tell'])
+    dp.register_message_handler(tell_private, commands = ['ls'])
     dp.register_message_handler(tell)
