@@ -4,20 +4,17 @@ from aiogram import types, Dispatcher
 from aiogram.dispatcher import FSMContext
 import os
 
-
 async def tell(message: types.Message, count = 0):
-    try:
-        await bot.send_chat_action(message.chat.id, types.ChatActions.TYPING)
-        gpt = GPT(str(message.from_user.id))
-        await message.answer(gpt.tell(message.text))
-    except Exception as er:
-        gpt = GPT(str(message.from_user.id))
-        gpt.deleteLast(5)
-        
-        if count > 3:
-            await message.answer(f'Извините, попробуйте еще раз. {er}')
-        else:
-            await tell(message, count+1)
+    await bot.send_chat_action(message.chat.id, types.ChatActions.TYPING)
+    gpt = GPT(str(message.from_user.id))
+    await message.answer(gpt.tell(message.text))
+    gpt = GPT(str(message.from_user.id))
+    #gpt.deleteLast(5)
+    
+    #if count > 3:
+    #    await message.answer(f'Извините, попробуйте еще раз. {er}')
+    ##else:
+    #    await tell(message, count+1)
 
 async def tell_private(message: types.Message, count = 0):
     try:

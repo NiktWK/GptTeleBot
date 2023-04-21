@@ -4,6 +4,7 @@ openai.api_key = os.environ['OPENAI_API_KEY']
 
 messages=[]
 
+"users.json"
 class GPT:
   def __init__(self, id): # id - id юзера
     with open('user.json', 'r') as f:
