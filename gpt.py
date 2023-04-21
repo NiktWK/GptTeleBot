@@ -10,15 +10,19 @@ class GPT:
     self.id = id
     if not id in self.jf:
       self.jf[id] = {'messages': []}
-      json.dump(self.jf, open('users.json', 'w'))
-      self.jf = json.load(open('users.json', 'r'))
+      with open('users.json', 'w') as f:
+        json.dump(self.jf, f)
+      
+      with open('users.json', 'r') as f:
+        self.jf = json.load(f)
 
     self.messages = self.jf[id]['messages']
     self.lastresponse = 'None'
 
   def reset(self):
     self.jf[self.id]['messages'] = []
-    json.dump(self.jf, open('users.json', 'w'))
+    with open('users.json', 'w') as f:
+        json.dump(self.jf, f)
 
   def deleteLast(self, index = 1):
     if len(self.jf[self.id]['messages']) > index:
@@ -26,7 +30,8 @@ class GPT:
 
   def save(self):
     self.jf[self.id]['messages'] = self.messages
-    json.dump(self.jf, open('users.json', 'w'))
+    with open('users.json', 'w') as f:
+      json.dump(self.jf, f)
 
   def tell(self, question):
     self.messages.append({"role": "user", "content": question})
