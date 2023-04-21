@@ -17,33 +17,30 @@ async def tell(message: types.Message, count = 0):
     #    await tell(message, count+1)
 
 async def tell_private(message: types.Message, count = 0):
-    try:
-        await bot.send_chat_action(message.chat.id, types.ChatActions.TYPING)
-        gpt = GPT(str(message.from_user.id))
-        await message.answer(gpt.tell(message.get_args()))
-    except Exception as er:
-        gpt.deleteLast(5)
+    await bot.send_chat_action(message.chat.id, types.ChatActions.TYPING)
+    gpt = GPT(str(message.from_user.id))
+    await message.answer(gpt.tell(message.get_args()))
+
+        # gpt.deleteLast(5)
         
-        if count > 3:
-            await message.answer(f'Извините, попробуйте еще раз. {er}')
-        else:
-            await tell_private(message, count+1)
+        # if count > 3:
+        #     await message.answer(f'1Извините, попробуйте еще раз. {er}')
+        # else:
+        #     await tell_private(message, count+1)
 
 async def tell_public(message: types.Message, count = 0):
     if message.chat.type == 'private':
         await message.answer("Извините, эта функция не доступна в личных сообщениях с ботом.")
         return
-    try:
-        await bot.send_chat_action(message.chat.id, types.ChatActions.TYPING)
-        gpt = GPT(str(message.chat.id))
-        await message.answer(gpt.tell(message.get_args()))
-    except Exception as er:
-        gpt.deleteLast(5)
-        
-        if count > 3:
-            await message.answer(f'Извините, попробуйте еще раз. {er}')
-        else:
-            await tell_public(message, count+1)
+    await bot.send_chat_action(message.chat.id, types.ChatActions.TYPING)
+    gpt = GPT(str(message.chat.id))
+    await message.answer(gpt.tell(message.get_args()))
+    # gpt.deleteLast(5)
+    
+    # if count > 3:
+    #     await message.answer(f'2Извините, попробуйте еще раз. {er}')
+    # else:
+    #     await tell_public(message, count+1)
 
 async def start(message: types.Message):
     s = """
