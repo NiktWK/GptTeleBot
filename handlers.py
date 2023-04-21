@@ -11,6 +11,7 @@ async def tell(message: types.Message, count = 0):
         gpt = GPT(str(message.from_user.id))
         await message.answer(gpt.tell(message.text))
     except Exception as er:
+        gpt = GPT(str(message.from_user.id))
         gpt.deleteLast(5)
         
         if count > 3:

@@ -6,14 +6,16 @@ messages=[]
 
 class GPT:
   def __init__(self, id): # id - id юзера
-    self.jf = json.load(open('users.json', 'r'))
+    with open('user.json', 'r') as f:
+        self.jf = json.load(f)
+    
     self.id = id
     if not id in self.jf:
       self.jf[id] = {'messages': []}
-      with open('users.json', 'w') as f:
+      with open('user.json', 'w') as f:
         json.dump(self.jf, f)
       
-      with open('users.json', 'r') as f:
+      with open('user.json', 'r') as f:
         self.jf = json.load(f)
 
     self.messages = self.jf[id]['messages']
@@ -21,7 +23,7 @@ class GPT:
 
   def reset(self):
     self.jf[self.id]['messages'] = []
-    with open('users.json', 'w') as f:
+    with open('user.json', 'w') as f:
         json.dump(self.jf, f)
 
   def deleteLast(self, index = 1):
@@ -30,7 +32,7 @@ class GPT:
 
   def save(self):
     self.jf[self.id]['messages'] = self.messages
-    with open('users.json', 'w') as f:
+    with open('user.json', 'w') as f:
       json.dump(self.jf, f)
 
   def tell(self, question):
