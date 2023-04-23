@@ -2,7 +2,7 @@ from connect import bot, dp
 from gpt import GPT
 from aiogram import types, Dispatcher
 from aiogram.dispatcher import FSMContext
-import os
+import os, logging
 
 async def tell(message: types.Message, count = 0):
     await bot.send_chat_action(message.chat.id, types.ChatActions.TYPING)

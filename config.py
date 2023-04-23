@@ -1,4 +1,4 @@
 import os
 
 os.environ["OPENAI_API_KEY"] = open("key.bin", "r").read()
-os.environ["TELEGRAM_BOT_TOKEN"] = "5878516157:AAGMOY4hExzI8a725L3ePEuBTAPgZdZ5Mh4"
+os.environ["TELEGRAM_BOT_TOKEN"] = "6132201222:AAElYETIcG15lsuE_zX5sfWyHGE6dtjkceM"
