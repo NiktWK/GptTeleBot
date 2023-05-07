@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "../NotesSite"
+		},
+		{
+			"path": "../ChatGptBot"
+		},
+		{
+			"path": "."
+		}
+	],
+	"settings": {}
+}
