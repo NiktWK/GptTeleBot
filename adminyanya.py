@@ -203,7 +203,7 @@ async def editStableDiffusion(message: types.Message, state: FSMContext):
     await state.finish()
 
 async def editOpenAI(message: types.Message, state: FSMContext):
-    with open('key_openai', 'w') as kfile:
+    with open('key_ai.bin', 'w') as kfile:
         kfile.write(message.text)
     await message.answer('Успешно!')
     await state.finish()
