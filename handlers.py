@@ -17,6 +17,7 @@ async def ad(message: types.Message, id):
         await message.answer(AD_STYLE.format(header = ad.header, text = ad.text), parse_mode='HTML')
 
 async def tell(message: types.Message, count = 0):
+    ans = None
     try:
         await bot.send_chat_action(message.chat.id, types.ChatActions.TYPING)
         gpt = AsyncGPT(str(message.from_user.id))
@@ -39,42 +40,54 @@ async def tell(message: types.Message, count = 0):
                 await tell(message, count+1)
 
 async def tell_private(message: types.Message, count = 0):
+    ans = None
     try:
         await bot.send_chat_action(message.chat.id, types.ChatActions.TYPING)
-        gpt = GPT(str(message.from_user.id))
-        await message.answer(gpt.tell(message.get_args()))
-        await ad(message, message.from_user.id)
-    except RateLimitError as er:
-        await message.answer("Слишком частые запросы, подождите 20 секунд.")
-    except Exception as er:
-        gpt.deleteTokens()
-        
-        if count > 3:
+        gpt = AsyncGPT(str(message.from_user.id))
+        ans = await gpt.tell(message.get_args())
+        await message.answer(ans)
+        try:
+            await ad(message, message.from_user.id)
+        except Exception as er:
             await message.answer(f'Извините, попробуйте еще раз. {er}')
+    except Exception as er:
+        if ans == None:
+            await message.answer("Слишком частые запросы, подождите 20 секунд.")
         else:
-            await tell(message, count+1)
+            gpt = GPT(str(message.from_user.id))
+            gpt.deleteTokens()
+            
+            if count > 3:
+                await message.answer(f'Извините, попробуйте еще раз. {er}')
+            else:
+                await tell(message, count+1)
 
 async def tell_public(message: types.Message, count = 0):
+    ans = None
     try:
         if message.chat.type == 'private':
             await message.answer("Извините, эта функция не доступна в личных сообщениях с ботом.")
             return
-        await bot.send_chat_action(message.chat.id, types.ChatActions.TYPING)
-        gpt = GPT(str(message.chat.id))
-        await message.answer(gpt.tell(message.get_args()))
-
-        if bot.get_chat_members_count(message.chat.id) < NOT_SHOW_AD_Q:
-            await ad(message, message.from_user.id)
-            
-    except RateLimitError as er:
-        await message.answer("Слишком частые запросы, подождите 20 секунд.")
-    except Exception as er:
-        gpt.deleteTokens()
         
-        if count > 3:
+        await bot.send_chat_action(message.chat.id, types.ChatActions.TYPING)
+        gpt = AsyncGPT(str(message.chat.id))
+        ans = await gpt.tell(message.text)
+        await message.answer(ans)
+        try:
+            await ad(message, message.from_user.id)
+        except Exception as er:
             await message.answer(f'Извините, попробуйте еще раз. {er}')
+    except Exception as er:
+        if ans == None:
+            await message.answer("Слишком частые запросы, подождите 20 секунд.")
         else:
-            await tell(message, count+1)
+            gpt = GPT(str(message.from_user.id))
+            gpt.deleteTokens()
+            
+            if count > 3:
+                await message.answer(f'Извините, попробуйте еще раз. {er}')
+            else:
+                await tell(message, count+1)
 
 async def start(message: types.Message):
     s = """
