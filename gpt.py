@@ -103,7 +103,7 @@ class GPT:
 
   def edit_key(newkey: str):
     if newkey[0:2] == "sk":
-      open("key.bin", "w").write(newkey)
+      open("key_ai.bin", "w").write(newkey)
       os.environ["OPENAI_API_KEY"] = newkey
       openai.api_key = newkey
 
