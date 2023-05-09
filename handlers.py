@@ -31,13 +31,14 @@ async def tell(message: types.Message, count = 0):
         if ans == None:
             await message.answer(f"Слишком частые запросы, подождите 20 секунд.->{er}")
         else:
-            gpt = GPT(str(message.from_user.id))
-            gpt.deleteTokens()
-            
-            if count > 3:
+            try:
+                gpt = AsyncGPT(str(message.from_user.id))
+                gpt.deleteTokens()
+                ans = await gpt.tell(message.text)
+                await message.answer(ans)
+                
+            except:
                 await message.answer(f'Извините, попробуйте еще раз. {er}')
-            else:
-                await tell(message, count+1)
 
 async def tell_private(message: types.Message, count = 0):
     ans = None
