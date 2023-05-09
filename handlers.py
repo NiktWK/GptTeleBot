@@ -36,7 +36,7 @@ async def tell(message: types.Message, count = 0):
                 gpt.deleteTokens()
                 ans = await gpt.tell(message.text)
                 await message.answer(ans)
-                
+
             except:
                 await message.answer(f'Извините, попробуйте еще раз. {er}')
 
@@ -44,8 +44,8 @@ async def tell_private(message: types.Message, count = 0):
     ans = None
     try:
         await bot.send_chat_action(message.chat.id, types.ChatActions.TYPING)
-        gpt = AsyncGPT(str(message.from_user.id))
-        ans = await gpt.tell(message.get_args())
+        gpt = GPT(str(message.from_user.id))
+        ans = gpt.tell(message.get_args())
         await message.answer(ans)
         try:
             await ad(message, message.from_user.id)
@@ -55,13 +55,7 @@ async def tell_private(message: types.Message, count = 0):
         if ans == None:
             await message.answer("Слишком частые запросы, подождите 20 секунд.")
         else:
-            gpt = GPT(str(message.from_user.id))
-            gpt.deleteTokens()
-            
-            if count > 3:
-                await message.answer(f'Извините, попробуйте еще раз. {er}')
-            else:
-                await tell(message, count+1)
+            await message.answer(f'Извините, попробуйте еще раз. {er}')
 
 async def tell_public(message: types.Message, count = 0):
     ans = None
