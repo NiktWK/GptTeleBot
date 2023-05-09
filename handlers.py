@@ -50,7 +50,7 @@ async def tell_private(message: types.Message, count = 0):
         try:
             await ad(message, message.from_user.id)
         except Exception as er:
-            await message.answer(f'Извините, попробуйте еще раз. {er}')
+            await message.answer(f'Извините, попробуйте еще раз. {er} + !')
     except Exception as er:
         if ans == None:
             await message.answer("Слишком частые запросы, подождите 20 секунд.")
