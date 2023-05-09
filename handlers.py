@@ -29,7 +29,7 @@ async def tell(message: types.Message, count = 0):
             await message.answer(f'Извините, попробуйте еще раз. {er}')
     except Exception as er:
         if ans == None:
-            await message.answer("Слишком частые запросы, подождите 20 секунд.")
+            await message.answer(f"Слишком частые запросы, подождите 20 секунд.->{er}")
         else:
             gpt = GPT(str(message.from_user.id))
             gpt.deleteTokens()
