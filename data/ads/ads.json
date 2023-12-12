@@ -1,0 +1,14 @@
+{
+    "0": {
+        "image-path": null,
+        "text": "<b>Это просто реклама!</b>\nЭто реклама про то, что <code>тут могла быть ваша реклама</code> =)",
+        "shows": 5,
+        "max-shows": 10000
+    },
+    "1": {
+        "image-path": "data/image/imageAgACAgIAAxkBAAIEnGTe7grWOvmACuewlHtqqbkZQmlXAAJTzDEbvVX4SjM-qCQjvXfJAQADAgADeQADMAQ",
+        "text": "<b>Это милый котик</b>\nА могла быть и ваша реклама!",
+        "shows": 6,
+        "max-shows": 10000
+    }
+}

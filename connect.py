@@ -11,8 +11,13 @@ async def set_commands(bot : Bot):
     commands = [
         BotCommand('/start', 'Начать'),
         BotCommand('/help', 'Помощь'),
-        BotCommand('/reset', 'Сбросить'),
+        BotCommand('/change', 'Настройки'),
+        BotCommand('/change_help', 'Помощь по настройке'),
+        BotCommand('/reset', 'Очистить диалог'),
+        BotCommand('/reset_public', 'Очистить диалог для чата'),
         BotCommand('/tell', 'Написать от чата'),
-        BotCommand('/ls', 'Написать от себя')
+        BotCommand('/next', 'Продолжить генерацию текста'),
+        BotCommand('/ls', 'Написать от себя'),
+        BotCommand('/image', 'Нарисовать картинку')
     ]
     await bot.set_my_commands(commands)
