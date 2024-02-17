@@ -384,6 +384,7 @@ class AsyncGPT(GPT):
     while process:
       try:
         completion = await self.get_response(json = {'model': self.gpt35_model, 'messages': self.messages.get()})
+        print(completion)
         chat_response = completion['choices'][0]['message']['content']
         process = False
 
@@ -528,5 +529,8 @@ class AsyncGPT(GPT):
 
     return response['text']
 
-if __name__ == "__main__":
-  print(Messages.get_no_delete(None, "rewrite"))
+if __name__ == "__main__":  
+  print(Messages.get_no_delete(None, "programming"))
+  mess = Messages("1299115555")
+  mess.new_type("programming")
+  print(mess.messages['programming'])
